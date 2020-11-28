@@ -1,0 +1,14 @@
+json:
+  logger:
+    application:
+      name: "weather-data-sys-api"
+      version: "1.0.0"
+      
+mule:
+  env: "dev"
+  
+weather:
+  appid: "fde32ec1d75b1bf14fbf5db4a3f14df7"
+
+http:
+  port: "8081"

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<flow name="weather-sys-api-implementationFlow" doc:id="f2e1b5ce-8f22-4296-ac83-ca6bbccf9f8e" >
+		<set-variable value="#[message.attributes.queryParams.date]" doc:name="Set Variable" doc:id="280eeffa-97bf-4f26-9343-1b063dce16f0" variableName="date"/>
+		<http:request method="GET" doc:name="Request" doc:id="a8ad46a3-bf60-49a0-89be-73d7bf133308" config-ref="HTTP_Request_configuration" path="/forecast">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"q" : (message.attributes.queryParams.city as String ++ "," ++ (message.attributes.queryParams.countryCode as String default "")) as String,
+	"units": message.attributes.queryParams.units,
+	//"mode": vars.responseMode
+}]]]></http:query-params>
+		</http:request>
+		<json-logger:logger doc:name="Logger" doc:id="e3d59ebb-992d-45d6-8594-39332fa46085" config-ref="JSON_Logger_Config" message="#[payload]" />
+		<ee:transform doc:name="Transform Message" doc:id="20693ba7-b018-4efa-a8d5-d66cbcdfbc67" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+fun getAvg(list)= list reduce ((item, accumulator=0) -> accumulator +
+item.main.temp as Number)
+---
+{
+	cityName: payload.city.name,
+	countryName: payload.city.country,
+	latitude: payload.city.coord.lat as String,
+	longitude: payload.city.coord.lon as String,
+	avgTemp: getAvg(payload.list)/sizeOf(payload.list),
+	weatherList: (payload.list map ((item, index) ->
+  if(item.dt_txt contains (vars.date ++ " 15:00:00" as String)) item else null)
+  filter ((item, index) -> item != null))
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="Logger" doc:id="3be2f6fb-dc07-47c0-bb5b-10b9533a1848" config-ref="JSON_Logger_Config" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="560bb67e-5e7f-4313-b849-34ba8ae4d53a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	cityName: payload.cityName,
+	countryName: payload.countryName,
+	latitude: payload.latitude,
+	longitude: payload.longitude,
+	date: payload.weatherList[0].dt_txt,
+	temperature: payload.avgTemp as String,
+	temp_min: payload.weatherList[0].main.temp_min as String,
+	temp_max: payload.weatherList[0].main.temp_max as String,
+	feelsLike: payload.weatherList[0].main.feels_like as String,
+	humidity: payload.weatherList[0].main.humidity as String,
+	weather: payload.weatherList[0].weather[0].main,
+	clouds: payload.weatherList[0].clouds.all as String,
+	windSpeed: payload.weatherList[0].wind.speed as String,
+	visibility: payload.weatherList[0].visibility as String
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="Logger" doc:id="caeca16a-f76c-4f99-84d8-ce2a26362089" config-ref="JSON_Logger_Config" message="#[payload]"/>
+	</flow>
+</mule>
