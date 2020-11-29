@@ -17,7 +17,7 @@ Date:  5 days forecast is provided including current day and it should be format
 
 Optional 
 
-Country code: Enter the country code as query parameters like us, uk…. e.t.c.
+Country code: Enter the country code as query parameters like us, uk…. e.t.c. after city Name like: London, GB
 
 Units: The weather data can be retrieve in units as metric, imperial and standard as default.
 
