@@ -3,11 +3,12 @@
 Weather System API which provides the weather details based on location. This API is built using Mule.
  Details of the api provided below
  
- Mule API endpoints:
+ # Mule API endpoints:
 
 http://weather-data-sys-api.us-e2.cloudhub.io/api/forecast 
 
-Query Parmameters:
+# Query Parmameters:
+
 Required:
 
 City: city name 
@@ -20,9 +21,10 @@ Country code: Enter the country code as query parameters like us, uk…. e.t.c.
 
 Units: The weather data can be retrieve in units as metric, imperial and standard as default.
 
-Example:
+# Example:
 
 http://weather-data-sys-api.us-e2.cloudhub.io/api/forecast?city=New York&date=2020-11-27
+
 Output Response:
 
 {
@@ -43,7 +45,7 @@ Output Response:
 }
 
 
-Description of Fields:
+# Description of Fields:
 
 cityName: City Name
 
@@ -73,4 +75,4 @@ windSpeed: Wind speed. Unit Default: meter/sec, Metric: meter/sec, Imperial: mil
 
 visibility: Average visibility, metres
 
-Note: The temperature show above output is average temperature of the given date.
+# Note: The temperature show above output is average temperature of the given date.
