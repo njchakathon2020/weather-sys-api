@@ -37,7 +37,7 @@ var weatherDay = if(vars.date == null or (vars.date as Date {format:"yyyy-MM-dd"
 	longitude: payload.city.coord.lon as String,
 	avgTemp: getAvg(payload.list)/sizeOf(payload.list),
 	weatherList: (payload.list map ((item, index) ->
-  if(item.dt_txt contains (weatherDay as String ++ " 15:00:00" as String)) item else ({"message":"enter correct date"}))
+  if(item.dt_txt contains ((vars.date as String) ++ " 15:00:00" as String)) item else null)
   filter ((item, index) -> item != null))
 }]]></ee:set-payload>
 			</ee:message>
