@@ -5,7 +5,7 @@ Weather System API which provides the weather details based on location. This AP
  
  # Mule API endpoints:
 
-http://weather-data-sys-api.us-e2.cloudhub.io/api/forecast 
+http://weather-sys-api.us-e2.cloudhub.io/api/forecast 
 
 # Query Parmameters:
 
