@@ -72,13 +72,6 @@
             <version>1.2.0</version>
             <classifier>mule-plugin</classifier>
         </dependency>
-		<dependency>
-            <groupId>52c314f3-5e2e-4861-9845-2d953af7f4a6</groupId>
-            <artifactId>weather-data-api</artifactId>
-            <version>1.0.0</version>
-            <classifier>raml</classifier>
-            <type>zip</type>
-        </dependency>
     	<dependency>
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-apikit-module</artifactId>
@@ -115,6 +108,13 @@
             <artifactId>mule-jms-connector</artifactId>
             <version>1.6.3</version>
             <classifier>mule-plugin</classifier>
+        </dependency>
+    	<dependency>
+            <groupId>52c314f3-5e2e-4861-9845-2d953af7f4a6</groupId>
+            <artifactId>weather-data-api</artifactId>
+            <version>1.0.1</version>
+            <classifier>raml</classifier>
+            <type>zip</type>
         </dependency>
     </dependencies>
 
